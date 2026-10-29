@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Host: localhost    Database: lojas
+-- Host: localhost    Database: loja_virtual_db
 -- ------------------------------------------------------
 -- Server version	8.0.46
 
@@ -16,29 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `distribuidoras`
+-- Table structure for table `entregas`
 --
 
-DROP TABLE IF EXISTS `distribuidoras`;
+DROP TABLE IF EXISTS `entregas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `distribuidoras` (
-  `distribuidoras_id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(30) NOT NULL,
-  `valor` decimal(10,2) DEFAULT NULL,
-  `reposicao` date DEFAULT NULL,
-  `quantidade` varchar(20) DEFAULT 'quantidade',
-  PRIMARY KEY (`distribuidoras_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+CREATE TABLE `entregas` (
+  `id_entrega` int NOT NULL AUTO_INCREMENT,
+  `codigo_rastreio` varchar(50) NOT NULL,
+  `status_entrega` varchar(30) NOT NULL DEFAULT 'Objeto Postado',
+  `data_postagem` datetime DEFAULT NULL,
+  `data_entrega_efetiva` datetime DEFAULT NULL,
+  `transportadora` varchar(50) NOT NULL,
+  `id_pedido` int NOT NULL,
+  PRIMARY KEY (`id_entrega`),
+  UNIQUE KEY `UC_Entregas_Rastreio` (`codigo_rastreio`),
+  UNIQUE KEY `UC_Entregas_Pedido` (`id_pedido`),
+  CONSTRAINT `FK_Entregas_Pedidos` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `distribuidoras`
+-- Dumping data for table `entregas`
 --
 
-LOCK TABLES `distribuidoras` WRITE;
-/*!40000 ALTER TABLE `distribuidoras` DISABLE KEYS */;
-/*!40000 ALTER TABLE `distribuidoras` ENABLE KEYS */;
+LOCK TABLES `entregas` WRITE;
+/*!40000 ALTER TABLE `entregas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `entregas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-29  8:44:48
+-- Dump completed on 2026-10-29  9:17:19

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Host: localhost    Database: lojas
+-- Host: localhost    Database: loja_virtual_db
 -- ------------------------------------------------------
 -- Server version	8.0.46
 
@@ -16,31 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `funcionarios`
+-- Table structure for table `produtos`
 --
 
-DROP TABLE IF EXISTS `funcionarios`;
+DROP TABLE IF EXISTS `produtos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `funcionarios` (
-  `funcionario_id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(30) NOT NULL,
-  `cargo` varchar(15) DEFAULT NULL,
-  `salario` decimal(10,2) DEFAULT NULL,
-  `carga_horaria` decimal(5,2) DEFAULT NULL,
-  `idade` tinyint DEFAULT NULL,
-  `quantidade` varchar(20) DEFAULT 'quantidade',
-  PRIMARY KEY (`funcionario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+CREATE TABLE `produtos` (
+  `id_produto` int NOT NULL AUTO_INCREMENT,
+  `nome_produto` varchar(100) NOT NULL,
+  `preco` decimal(10,2) NOT NULL,
+  `quantidade_estoque` int NOT NULL DEFAULT '0',
+  `descricao` text,
+  `codigo_barras` varchar(50) DEFAULT NULL,
+  `id_categoria` int NOT NULL,
+  PRIMARY KEY (`id_produto`),
+  KEY `FK_Produtos_Categorias` (`id_categoria`),
+  CONSTRAINT `FK_Produtos_Categorias` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`) ON DELETE RESTRICT,
+  CONSTRAINT `CHK_Produtos_Estoque` CHECK ((`quantidade_estoque` >= 0)),
+  CONSTRAINT `CHK_Produtos_Preco` CHECK ((`preco` > 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `funcionarios`
+-- Dumping data for table `produtos`
 --
 
-LOCK TABLES `funcionarios` WRITE;
-/*!40000 ALTER TABLE `funcionarios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `funcionarios` ENABLE KEYS */;
+LOCK TABLES `produtos` WRITE;
+/*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-29  8:44:48
+-- Dump completed on 2026-10-29  9:17:20

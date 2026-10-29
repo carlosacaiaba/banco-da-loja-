@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Host: localhost    Database: lojas
+-- Host: localhost    Database: loja_virtual_db
 -- ------------------------------------------------------
 -- Server version	8.0.46
 
@@ -16,30 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `prateleiras`
+-- Table structure for table `pedidos`
 --
 
-DROP TABLE IF EXISTS `prateleiras`;
+DROP TABLE IF EXISTS `pedidos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prateleiras` (
-  `prateleiras_id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(30) NOT NULL,
-  `setor` varchar(20) DEFAULT NULL,
-  `capacidade` int NOT NULL,
-  `quantidade_produtos` int DEFAULT '0',
-  `data_organizacao` date DEFAULT NULL,
-  PRIMARY KEY (`prateleiras_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+CREATE TABLE `pedidos` (
+  `id_pedido` int NOT NULL AUTO_INCREMENT,
+  `data_pedido` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `valor_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status_pedido` varchar(20) NOT NULL DEFAULT 'Pendente',
+  `cupom_desconto` varchar(30) DEFAULT NULL,
+  `observacoes` text,
+  `id_cliente` int NOT NULL,
+  `id_funcionario` int DEFAULT NULL,
+  PRIMARY KEY (`id_pedido`),
+  KEY `FK_Pedidos_Clientes` (`id_cliente`),
+  KEY `FK_Pedidos_Funcionarios` (`id_funcionario`),
+  CONSTRAINT `FK_Pedidos_Clientes` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE RESTRICT,
+  CONSTRAINT `FK_Pedidos_Funcionarios` FOREIGN KEY (`id_funcionario`) REFERENCES `funcionarios` (`id_funcionario`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prateleiras`
+-- Dumping data for table `pedidos`
 --
 
-LOCK TABLES `prateleiras` WRITE;
-/*!40000 ALTER TABLE `prateleiras` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prateleiras` ENABLE KEYS */;
+LOCK TABLES `pedidos` WRITE;
+/*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-29  8:44:48
+-- Dump completed on 2026-10-29  9:17:20

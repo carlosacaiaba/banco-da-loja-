@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Host: localhost    Database: lojas
+-- Host: localhost    Database: loja_virtual_db
 -- ------------------------------------------------------
 -- Server version	8.0.46
 
@@ -16,31 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `produtos`
+-- Table structure for table `pagamentos`
 --
 
-DROP TABLE IF EXISTS `produtos`;
+DROP TABLE IF EXISTS `pagamentos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `produtos` (
-  `produtos_id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(30) NOT NULL,
-  `descricao` varchar(100) DEFAULT NULL,
-  `preco` decimal(10,2) NOT NULL,
-  `quantidade` int DEFAULT '0',
-  `categoria` varchar(30) DEFAULT NULL,
-  `data_cadastro` date DEFAULT NULL,
-  PRIMARY KEY (`produtos_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+CREATE TABLE `pagamentos` (
+  `id_pagamento` int NOT NULL AUTO_INCREMENT,
+  `forma_pagamento` varchar(30) NOT NULL,
+  `valor_pago` decimal(10,2) NOT NULL,
+  `data_pagamento` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status_pagamento` varchar(20) NOT NULL DEFAULT 'Em Analise',
+  `comprovante_transacao` varchar(255) DEFAULT NULL,
+  `id_pedido` int NOT NULL,
+  PRIMARY KEY (`id_pagamento`),
+  KEY `FK_Pagamentos_Pedidos` (`id_pedido`),
+  CONSTRAINT `FK_Pagamentos_Pedidos` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `produtos`
+-- Dumping data for table `pagamentos`
 --
 
-LOCK TABLES `produtos` WRITE;
-/*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
+LOCK TABLES `pagamentos` WRITE;
+/*!40000 ALTER TABLE `pagamentos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pagamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-29  8:44:48
+-- Dump completed on 2026-10-29  9:17:19
